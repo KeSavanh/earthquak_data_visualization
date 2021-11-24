@@ -1,0 +1,16 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+#map,
+body,
+html {
+  height: 100%;
+}
+
+.leaflet-grid-label .lng {
+	margin-left: 8px;
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
