@@ -14,3 +14,13 @@ html {
 	-webkit-transform: rotate(90deg);
 	transform: rotate(90deg);
 }
+
+a {
+  font-weight: 200;
+  font-size: 25px;
+  color: blue;
+}
+
+.navbar {
+  background-color: rgb(159, 192, 252);
+}
