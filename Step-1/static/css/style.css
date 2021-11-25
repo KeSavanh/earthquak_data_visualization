@@ -3,11 +3,44 @@ body {
   margin: 0;
 }
 
-#map,
+#map {
+  height: 680px;
+  width: auto;
+  border: 3px solid;
+  border-color: black;
+  padding-top: 10px;
+ 
+}
+
 body,
 html {
   height: 100%;
 }
+
+h1 {
+  color: white;
+  text-align: center;
+  padding-top: 20px;
+}
+form {
+  text-align: center;
+  height: 38px;
+  padding-bottom: 4px;
+}
+button {
+   text-align: center;
+   height: 25px;
+   width: 250px;
+   background-color: rgb(205, 190, 205);
+   text-justify: auto;
+   font-size: 15px;
+   padding-bottom: 10px;
+
+  
+  
+   
+   
+ }
 
 .leaflet-grid-label .lng {
 	margin-left: 8px;
@@ -15,12 +48,39 @@ html {
 	transform: rotate(90deg);
 }
 
-a {
-  font-weight: 200;
-  font-size: 25px;
-  color: blue;
-}
 
 .navbar {
-  background-color: rgb(159, 192, 252);
+  background-color: rgb(1, 164, 164);
+  font-size: 20px;
+  padding-bottom: 2px;
+}
+
+.text-center, .text-white {
+  height: 30px;
+  color: white;
+  background-color: rgb(1, 164, 164);
+  text-align:center;
+  padding-top: 7px;
+  font-size: 18px;
+  
+}
+.legend {
+  line-height: 18px;
+  color: #555;
+}
+
+.legend i {
+  width: 50px;
+  height: 50px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+.info {
+  padding: 50px 50px;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
 }

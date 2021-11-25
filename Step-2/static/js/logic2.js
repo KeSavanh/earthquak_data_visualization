@@ -11,7 +11,7 @@ d3.json(url).then(data => {
 
     });
 });
-// return marker color base on magnitude
+// return marker color base on magnitude   
 function markerColor(magnitude) {
     if (magnitude >= 5) {return "#fb0000"
     } else
