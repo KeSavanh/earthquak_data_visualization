@@ -2,7 +2,7 @@
 // Store our API endpoint as queryUrl.
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
 
-// Perform a GET request to the query URL/
+// Perform a GET request to the query URL
 d3.json(url).then(data => {
     // Once we get a response, send the data.features object to the createFeatures function.
     createFeatures(data.features);
