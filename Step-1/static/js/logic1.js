@@ -1,12 +1,14 @@
 
-// Store our API endpoint as queryUrl.
+// Store our API endpoint as url
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
 
 // Perform a GET request to the query URL
-d3.json(url).then(data => {
-    // Once we get a response, send the data.features object to the createFeatures function.
-    createFeatures(data.features);
-})
+d3.json(url).then(earthquakeData => {
+    console.log(earthquakeData);
+    var earthquakeFeatures = earthquakeData.features;
+    createFeatures(earthquakeFeatures);
+});
+
 /////////////
 function markerColor(magnitude) {
     if (magnitude >= 5) {return "#fb0000"
@@ -23,6 +25,7 @@ function markerColor(magnitude) {
     };
 };
 //////////////
+
 //////////////
 function markerSize(magnitude) {
     if (magnitude === 0) {
@@ -31,10 +34,11 @@ function markerSize(magnitude) {
     return magnitude * 3;
 };
 /////////////
+
 /////////////
 function markerStyle(feature) {
     return {
-        fillOpacity: 0.8,
+        fillOpacity: 0.7,
         fillColor: markerColor(feature.properties.mag),
         radius: markerSize(feature.properties.mag),
         stroke: true,
@@ -43,6 +47,7 @@ function markerStyle(feature) {
     };
 };
 ////////////
+
 ////////////
 function createFeatures(earthquakeData) {
     
@@ -59,16 +64,16 @@ function createFeatures(earthquakeData) {
                 "</p><hr><p>Magnitude: " + feature.properties.mag + "</p>");
             }
     });
-   
     createMap(earthquakes);
 };
 //////////////////
+
 /////////////////
 function createMap(earthquakes) {
     var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
-
+    // Creat a map object.
     var baseMaps = {
         "Street Map" : street
     };

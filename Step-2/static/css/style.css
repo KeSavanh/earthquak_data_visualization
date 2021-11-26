@@ -7,7 +7,7 @@ body {
   height: 680px;
   width: auto;
   border: 3px solid;
-  border-color: black;
+  border-color: salmon;
   padding-top: 10px;
  
 }
@@ -66,21 +66,23 @@ button {
 }
 .legend {
   line-height: 18px;
-  color: #555;
+  color: rgb(6, 6, 6);
 }
 
 .legend i {
-  width: 50px;
-  height: 50px;
+  width: 20px;
+  height: 20px;
   float: left;
   margin-right: 8px;
   opacity: 0.7;
 }
 
 .info {
-  padding: 50px 50px;
+  padding: 10px 10px;
   background: white;
   background: rgba(255, 255, 255, 0.8);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
+  font-size: medium;
+  color: black;
 }

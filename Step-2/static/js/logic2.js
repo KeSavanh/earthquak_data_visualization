@@ -1,17 +1,16 @@
 
-// Store our API endpoint as queryUrl.
+// Store our API endpoint as url
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
-
+// Store our tectonic plate json file link as plateUrl
 var plateUrl = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json";
 
-var myMap = {};
 // Perform a GET request to the query URL
-d3.json(url).then(data => {
-        createFeatures(data.features);
+d3.json(url).then(earthquakeData => {
+    console.log(earthquakeData);
+    var earthquakeFeatures = earthquakeData.features;
+    createFeatures(earthquakeFeatures);
 });
-d3.json(plateUrl).then(plateData => {
-    createOverlay(plateData.features);
-});
+
 /////////////
 function markerColor(magnitude) {
     if (magnitude >= 5) {return "#fb0000"
@@ -28,6 +27,7 @@ function markerColor(magnitude) {
     };
 };
 //////////////
+
 //////////////
 function markerSize(magnitude) {
     if (magnitude === 0) {
@@ -36,10 +36,11 @@ function markerSize(magnitude) {
     return magnitude * 3;
 };
 /////////////
+
 /////////////
 function markerStyle(feature) {
     return {
-        fillOpacity: 0.8,
+        fillOpacity: 0.7,
         fillColor: markerColor(feature.properties.mag),
         radius: markerSize(feature.properties.mag),
         stroke: true,
@@ -48,6 +49,7 @@ function markerStyle(feature) {
     };
 };
 ////////////
+
 ////////////
 function createFeatures(earthquakeData) {
     
@@ -56,20 +58,32 @@ function createFeatures(earthquakeData) {
             return L.circleMarker([feature.geometry.coordinates[1], feature.geometry.coordinates[0]]);
         },
             style: markerStyle,
-        
-        
+
             onEachFeature: function(feature, layer) {
                 layer.bindPopup("<h4>Location: " + feature.properties.place + 
                 "</h4><hr><p>Date & Time: " + new Date(feature.properties.time) + 
                 "</p><hr><p>Magnitude: " + feature.properties.mag + "</p>");
             }
     });
-   
-    createMap(earthquakes);
+
+    d3.json(plateUrl).then(plateData => {
+        console.log(plateData);
+        var plateFeatures = plateData.features;
+    
+        var tectonicLine = L.geoJSON(plateFeatures, {
+            color: "salmon",
+            weight: 3,
+            opacity: 0.75,
+            fill: false,
+            border: false
+        })
+        createMap(earthquakes, tectonicLine);
+    });
 };
 //////////////////
+
 /////////////////
-function createMap(earthquakes) {
+function createMap(earthquakes, tectonicLine) {
     var satMap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={accessToken}", {
         attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
         maxZoom: 18,
@@ -98,21 +112,21 @@ function createMap(earthquakes) {
     };
 
     var overlayMaps = {
-        "Earthquakes" : earthquakes
+        "Earthquakes" : earthquakes,
+        "Fault Line" : tectonicLine
     };
     // Creat a map object.
     var myMap = L.map("map", {
         center: [37.09, -95.71],
         zoom: 4,
-        layers: [satMap, earthquakes]
+        layers: [satMap, earthquakes, tectonicLine]
     });
      // Create a layer control.
     // Pass it our baseMaps and overlayMaps.
     // Add the layer control to the map.
-    var layersControl = L.control.layers(baseMaps, overlayMaps, {
+    L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
-    });
-    layersControl.addTo(myMap);
+    }).addTo(myMap);
 
     // add grid to map
     L.latlngGraticule({
@@ -128,11 +142,10 @@ function createMap(earthquakes) {
     // legend
     var legend = L.control({position: "bottomright"});
     legend.onAdd = function () {
-        var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 1, 2, 3, 4, 5];
-
+        var div = L.DomUtil.create('div', 'info legend');
         div.innerHtml = 'Magnitude<br><hr>'
-
+        var grades = [0, 1, 2, 3, 4, 5];
+        // div.innerHtml = "test"
         for (var i = 0; i < grades.length; i++) {
             div.innerHtml += 
                 '<i style="background:' + markerColor(grades[i] + 1) + '">&nbsp&nbsp&nbsp&nbsp</i> ' +
@@ -143,16 +156,5 @@ function createMap(earthquakes) {
     legend.addTo(myMap);
 };
 
-//////
-function createOverlay(plateData) {
-    var tectonicLine = L.geoJSON(plateData, {
-        style : {
-            color: "red",
-            weight: 1.5,
-            opacity: 1
-        }
-    });
-    myMap.addLayer(tectonicLine);
-    layersControl.addOverlay(tectonicLine, "Fault Lines");
-};
+
 
