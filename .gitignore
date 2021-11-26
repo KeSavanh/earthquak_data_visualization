@@ -133,4 +133,4 @@ dmypy.json
 __pycache__
 .history
 
-config.js
+# config.js
